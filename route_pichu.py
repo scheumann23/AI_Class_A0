@@ -85,5 +85,6 @@ if __name__ == "__main__":
         print("Shhhh... quiet while I navigate!")
         solution = search1(house_map)
         print("Here's the solution I found:")
-        print(solution)
+        print(solution[0], end=" ")
+        print(solution[1])
 
