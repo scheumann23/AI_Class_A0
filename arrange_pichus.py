@@ -2,7 +2,7 @@
 #
 # arrange_pichus.py : arrange agents on a grid, avoiding conflicts
 #
-# Submitted by : [PUT YOUR NAME AND USERNAME HERE]
+# Submitted by : Neelan Scheumann - nscheuma
 #
 # Based on skeleton code in CSCI B551, Fall 2020
 #
@@ -27,9 +27,50 @@ def printable_board(board):
 def add_pichu(board, row, col):
     return board[0:row] + [board[row][0:col] + ['p',] + board[row][col+1:]] + board[row+1:]
 
+#check if you can see a pichu from a given spot
+def valid_spot(board, row, col):
+    #check left
+    c = col
+    while c >= 0:
+        if board[row][c]=='.':
+            c += -1
+        elif board[row][c]=='X' or board[row][c]=='@':
+            c = -1
+        else:
+            return False
+    #check right
+    c = col
+    while c < len(board[row]):
+        if board[row][c]=='.': 
+            c += 1
+        elif board[row][c]=='X' or board[row][c]=='@':
+            c = len(board[row])
+        else:
+            return False
+    #check up
+    r = row
+    while r >= 0:
+        if board[r][col]=='.': 
+            r += -1
+        elif board[r][col]=='X' or board[r][col]=='@':
+            r = -1
+        else:
+            return False
+    #check down
+    r = row
+    while r < len(board):
+        if board[r][col]=='.': 
+            r += 1
+        elif board[r][col]=='X' or board[r][col]=='@':
+            r = len(board)
+        else:
+            return False
+    return True
+
 # Get list of successors of given board state
 def successors(board):
-    return [ add_pichu(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if board[r][c] == '.' ]
+    return [add_pichu(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if (board[r][c] == '.')
+                                                                                                 and(valid_spot(board, r, c))]
 
 # check if board is a goal state
 def is_goal(board):
@@ -43,7 +84,7 @@ def solve(initial_board):
             if is_goal(s):
                 return(s)
             fringe.append(s)
-    return False
+    return None
 
 # Main Function
 if __name__ == "__main__":
