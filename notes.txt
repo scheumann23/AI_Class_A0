@@ -1,7 +1,0 @@
-1. I added a print statement after it checked each move to show me where it was getting caught in a loop and its between (2,2) and (2,3). I think this is because it is implementing DFS and the stack gets caught in a loop. 
-2. Another issue is that the moves function allows pichu to move backwards.
-    - The first thing I did was add a list of places that had been visited already so I could eliminate any move that would return me to a location that I have already explored
-3. There was also nothing in the starter code that would print "Inf" if a solution was never found, so I fixed this  
-4. I created a function to compute the euclidian distance between two points on the board. I will use this as my heuristic function as I implement A* search
-5. I wanted to implement A* so I had to create a way to implement a priority queue. To do this, I created a function that would search through the distances and pop the element with the lowest distance 
-6. I also needed to create a function that would determine the direction traveled from one "move" to another in order to keep track of the full path from start to finish

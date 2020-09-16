@@ -19,5 +19,16 @@ Some of the assumptions I am making in this solution is that a bird can only fly
 
 ### Part 2: Arrange Pichu
 
-##### coming soon...
+##### Issues with starter code
+The starter code was actually very close to working correctly. The big issue that it had was that it didn't take into consideration whether two pichus could "see" each other. 
+
+##### My solution
+The main thing I added to the code was a new function that would search up/down/left/right to see whether a pichu could be seen from a given spot. If it could, then that spot would not be considered as a valid spot by the successor function and a new board with a pichu at that spot would not be explored. Even with just this one relatively small change, the program works as intended. When a solution exists, it can generally find it within milliseconds (at least for the sample map given to us). When it starts to run into the solutions that dont exist, i.e. when K gets too large, it does take a while to realize that a soltuion is impossible. This is becuase it needs to search through the entire state space in order to ensure that a solution does not exist. 
+
+I decided to stick with the depth first search implementation that existed in the starter code since the program seemed to find a solution whenever I tested it and could do so pretty quickly. The state space that gets searched through is all the possible iterations of the given map that contain between 1 and K pichus. The initial state is a map with 1 pichu. The successor function returns a list of possible board states that have one more pichu added in a valid spot, i.e. a spot where the new pichu cannot see any of the current pichus. For this abstraction there doesn't seem to be a natural cost function. As long as a solution is found, there isn't one that would be "better" than another
+
+### Extra Credit
+
+##### New additions
+The first thing that I had to do to tackle the extra credit assignment was to expand the valid_state() function to also look to see if two pichus could see each other diagonally. My first thought was to create an entirely separate function that could be called if K turned out to be 0, and would be ignored if K were greater than 0 (in which case the original valid_spot() function would run). This decision caused me to have to then create several more modified functions, namely super_successors(), is_super_goal(), and super_search() as well as modified verison of solve(). I also pulled out the main code that was held within solve() and made it it's own function standard_search(). Before the resubmission deadline I plan on trying to combine everything into singular functions that can handle either case, but it's late, and the deadline is approaching. TFor K = 0. the solve() function also needed to be modified to run through multiple iterations of "supser search" (which is identical to standard_search() except it uses the stricter criteria for placing the pichus) until it couldn't find a solution. As soon as this happened, the functions decreases K, or in my case i, by 1 and runs the result of the last run of super_search().
 
