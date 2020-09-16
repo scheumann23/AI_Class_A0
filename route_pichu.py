@@ -77,14 +77,17 @@ def search1(house_map):
                 # after the move is added to the fringe, add it to the list of visited places so that we don't return and backtrack
                 visited.append(move)
         # if the fringe every empties out it must mean that there is no solution so return 'Inf'
-        return 'Inf'
+        return "Inf"
 
 # Main Function
 if __name__ == "__main__":
         house_map=parse_map(sys.argv[1])
         print("Shhhh... quiet while I navigate!")
         solution = search1(house_map)
-        print("Here's the solution I found:")
-        print(solution[0], end=" ")
-        print(solution[1])
+        if solution == 'Inf':
+            print(solution)
+        else:
+            print("Here's the solution I found:")
+            print(solution[0], end=" ")
+            print(solution[1])
 
