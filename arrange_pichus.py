@@ -67,10 +67,19 @@ def valid_spot(board, row, col):
             return False
     return True
 
-# Get list of successors of given board state
+# this checks to see if there are available spots in that a pichu could theoretically fit
+def is_column_full(board, c):
+    for r in range(0,len(board)):
+        if board[r][c] == '.' and valid_spot(board, r, c):
+            return False
+    return True         
+
+# instead of adding every possible successor, limit the successors to only return available spots in the left most column that has a spot available
 def successors(board):
-    return [add_pichu(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if (board[r][c] == '.')
-                                                                                                 and(valid_spot(board, r, c))]
+    for c in range(0, len(board[0])):
+        while not is_column_full(board,c):
+            return [add_pichu(board, r, c) for r in range(0, len(board)) if (board[r][c] == '.') and(valid_spot(board, r, c))]
+    return []
 
 # check if board is a goal state
 def is_goal(board):
@@ -86,13 +95,15 @@ def standard_search(initial_board):
             fringe.append(s)
     return None
 
-# The next 4 functions are all to handle the extra credit portion of the assignment. They are all similar to functions above but were modified to 
+# The next 5 functions are all to handle the extra credit portion of the assignment. They are all similar to functions above but were modified to 
 # handle the unique case posed for extra credit.
 
-# return the list of successors - the only difference from above is that this calls super_valid_spot instead of valid spot
+#return the list of successors - the only difference from above is that this calls super_valid_spot instead of valid spot
 def super_successors(board):
-    return [add_pichu(board, r, c) for r in range(0, len(board)) for c in range(0,len(board[0])) if (board[r][c] == '.')
-                                                                                                 and(super_valid_spot(board, r, c))]
+    for c in range(0, len(board[0])):
+        while not is_column_super_full(board,c):
+            return [add_pichu(board, r, c) for r in range(0, len(board)) if (board[r][c] == '.') and(super_valid_spot(board, r, c))]
+    return []
 
 #check if you can see a pichu from a given spot - adds in the four diagonal directions as well to handle the extra credit case
 def super_valid_spot(board, row, col):
@@ -183,6 +194,13 @@ def super_valid_spot(board, row, col):
 # checks to see if the goal state has been met
 def is_super_goal(board, i):
     return count_pichus(board) == i
+
+# is the same as is_column_full() above, but uses super_valid_spot instead of valid_spot()
+def is_column_super_full(board, c):
+    for r in range(0,len(board)):
+        if board[r][c] == '.' and super_valid_spot(board, r, c):
+            return False
+    return True  
 
 # runs the search algorithm, but instead of calling successors, it calls super_successors
 def super_search(initial_board, i):
